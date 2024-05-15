@@ -1,9 +1,15 @@
 #include <ncurses.h>
+#include <signal.h>
 #include <unistd.h>
 
 #include "snake.h"
 
+static volatile bool gameloop = true;
+
+void sighandler(int sig) { gameloop = false; }
+
 int main() {
+    signal(SIGINT, sighandler);
     WINDOW *win = initscr();
     keypad(win, true);
     nodelay(win, true);
