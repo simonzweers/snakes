@@ -103,6 +103,21 @@ void snake_free(snake_t *snake) {
 	free(snake);
 }
 
+void display_field(WINDOW *win) {
+	for (size_t y = 0; y <= FIELD_SIZE_Y; y++)
+	{
+		for (size_t x = 0; x <= FIELD_SIZE_X; x++)
+		{
+			if (y == FIELD_SIZE_Y || x == FIELD_SIZE_X) // Is border
+			{
+				char border_str[10] = {0};
+				sprintf(border_str, "%d", x);
+				mvwaddstr(win, y, x * 2, border_str);
+			}			
+		}	
+	}
+}
+
 void parse_input(int input_char, snake_dir_t* snake_dir_ptr) {
 	// Y coordinate is inverted because of terminal coordinates
 	switch (input_char)
@@ -133,7 +148,7 @@ void set_new_pos(snake_head_pos_t* snake_head_pos, snake_dir_t *snake_dir) {
 	snake_head_pos->y_pos += snake_dir->y_dir;
 }
 bool is_valid_position(int x, int y) {
-	if ((x >= 0 && x < FIELD_SIZE_X) && (y >= 0 && y < FIELD_SIZE_Y))
+	if ((x >= 0 && x <= FIELD_SIZE_X) && (y >= 0 && y <= FIELD_SIZE_Y))
 	{
 		return true;
 	} else
@@ -161,13 +176,15 @@ int main() {
 	snake_add_node(snake, &snake_head_pos);
 	snake_add_node(snake, &snake_head_pos);
 	while (1) {
+
 		int chr = wgetch(win);
 		parse_input(chr, &snake_dir);
 		set_new_pos(&snake_head_pos, &snake_dir);
-		snake_propogate(snake, &snake_head_pos);
 		if (!is_valid_position(snake_head_pos.x_pos, snake_head_pos.y_pos))
 		{
 			break;
+		} else { // Snake is in valid position
+			snake_propogate(snake, &snake_head_pos);
 		}
 
 		// 	if (is_food_pos())
@@ -178,11 +195,11 @@ int main() {
 		// 		snake_propogate();
 		// 	}
 		
-		
-		
 		werase(win);
 		snake_display(snake, win);
+		display_field(win);
 		usleep(100 * 1000);
+		
 	}
 	snake_remove_last(snake);
 	snake_free(snake);
