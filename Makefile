@@ -3,7 +3,6 @@ CFLAGS="-g"
 LFLAGS="-lncurses"
 
 all: snake
-	echo $^ $@
 
 snake: main.o snake.o
 	${CC} ${CFLAGS} $^ -o $@  ${LFLAGS}
