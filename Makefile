@@ -16,5 +16,8 @@ main.o: main.c
 clean:
 	rm snake *.o
 
+install:
+	cp ./snake /usr/local/bin/
+
 run: all
 	./snake
