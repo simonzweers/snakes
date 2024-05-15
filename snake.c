@@ -36,7 +36,7 @@ snake_t* snake_new(snake_head_pos_t *snake_head_pos) {
 	new_snake->head->next = NULL;
 	new_snake->head->x = snake_head_pos->x_pos;
 	new_snake->head->y = snake_head_pos->y_pos;
-	printw("Created new snake %p\n", new_snake);
+	printf("Created new snake %p\n", new_snake);
 	return new_snake;
 }
 
@@ -46,20 +46,27 @@ void snake_add_node(snake_t *snake, snake_head_pos_t *snake_head_pos) {
 	new_node->y = snake_head_pos->y_pos;
 	new_node->next = snake->head;
 	snake->head = new_node;
-	printw("Adding node: %p | x: %d, y: %d\n", new_node, new_node->x, new_node->y);
+	printf("Adding node: %p | x: %d, y: %d\n", new_node, new_node->x, new_node->y);
 }
 
 void snake_remove_last(snake_t *snake) {
 	snake_node_t *cursor = snake->head;
 	snake_node_t *cursor_previous;
-	while (cursor->next != NULL)
+	if (cursor->next == NULL)
 	{
-		cursor_previous = cursor;
-		cursor = cursor->next;
+		snake->head = NULL;
+		free(cursor);
+	} else
+	{
+		while (cursor->next != NULL)
+		{
+			cursor_previous = cursor;
+			cursor = cursor->next;
+		}
+		cursor_previous->next = NULL;
+		printf("Freeing last node: %p | x: %d, y: %d\n", cursor, cursor->x, cursor->y);
+		free(cursor);
 	}
-	cursor_previous->next = NULL;
-	printw("Freeing last node: %p | x: %d, y: %d\n", cursor, cursor->x, cursor->y);
-	free(cursor);
 }
 
 void snake_propogate(snake_t *snake, snake_head_pos_t *snake_head_pos) {
@@ -70,14 +77,19 @@ void snake_propogate(snake_t *snake, snake_head_pos_t *snake_head_pos) {
 void snake_free(snake_t *snake) {
 	snake_node_t *cursor = snake->head;
 	snake_node_t *cursor_next;
+	if (cursor == NULL)
+	{
+		/* code */
+	}
+	
 	while (cursor != NULL)
 	{
 		cursor_next = cursor->next;
-		printw("Freeing node %p | x: %d, y: %d\n", cursor, cursor->x, cursor->y);
+		printf("Freeing node %p | x: %d, y: %d\n", cursor, cursor->x, cursor->y);
 		free(cursor);
 		cursor = cursor_next;
 	}
-	printw("freeing snake %p\n", snake);
+	printf("freeing snake %p\n", snake);
 	free(snake);
 }
 
@@ -121,8 +133,8 @@ bool is_valid_position(int x, int y) {
 }
 
 int main() {
-    WINDOW* win = initscr();
-	keypad(win, true);
+    // WINDOW* win = initscr();
+	// keypad(win, true);
 	// nodelay(win, true);
 	snake_head_pos_t snake_head_pos = {
 		.x_pos = FIELD_SIZE_X / 2,
@@ -158,11 +170,11 @@ int main() {
 	// }
 	snake_t *snake= snake_new(&snake_head_pos);
 	snake_head_pos.x_pos = 1; snake_head_pos.y_pos = 2;
-	// snake_add_node(snake, &snake_head_pos);
-	// snake_head_pos.x_pos = 3; snake_head_pos.y_pos = 4;
-	// snake_add_node(snake, &snake_head_pos);
-	// snake_head_pos.x_pos = 5; snake_head_pos.y_pos = 6;
-	// snake_add_node(snake, &snake_head_pos);
+	snake_add_node(snake, &snake_head_pos);
+	snake_head_pos.x_pos = 3; snake_head_pos.y_pos = 4;
+	snake_add_node(snake, &snake_head_pos);
+	snake_head_pos.x_pos = 5; snake_head_pos.y_pos = 6;
+	snake_add_node(snake, &snake_head_pos);
 	snake_remove_last(snake);
 	snake_free(snake);
 	

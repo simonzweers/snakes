@@ -6,10 +6,10 @@ all: snake
 	echo $^ $@
 
 snake: snake.o
-	${CC} -o $@ $^ ${LFLAGS}
+	${CC} ${CFLAGS} -o $@ $^ ${LFLAGS}
 
 snake.o: snake.c
-	${CC} -c -o $@ $^
+	${CC} ${CFLAGS} -c -o $@ $^
 
 clean:
 	rm snake *.o
