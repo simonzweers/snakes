@@ -58,6 +58,22 @@ void snake_display(snake_t *snake, WINDOW *win) {
     }
 }
 
+bool snake_is_colliding(snake_t *snake) {
+    snake_node_t *cursor = snake->head->next;
+    if (cursor == snake->head) {
+        return false;
+    } else {
+        cursor = cursor->next;
+    }
+    while (cursor != NULL) {
+        if ((snake->head->x == cursor->x) && (snake->head->y == cursor->y)) {
+            return true;
+        }
+        cursor = cursor->next;
+    }
+    return false;
+}
+
 void snake_free(snake_t *snake) {
     snake_node_t *cursor = snake->head;
     snake_node_t *cursor_next;

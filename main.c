@@ -35,6 +35,8 @@ int main() {
         set_new_pos(&snake_head_pos, &snake_dir);
         if (!is_valid_position(snake_head_pos.x_pos, snake_head_pos.y_pos)) {
             gameloop = false;
+        } else if (snake_is_colliding(snake)) {
+            gameloop = false;
         } else if (is_food_pos(&snake_head_pos, &food_pos)) {
             snake_add_node(snake, &snake_head_pos);
             new_food(&food_pos);

@@ -39,6 +39,8 @@ void snake_propogate(snake_t *snake, snake_head_pos_t *snake_head_pos);
 
 void snake_display(snake_t *snake, WINDOW *win);
 
+bool snake_is_colliding(snake_t *snake);
+
 void snake_free(snake_t *snake);
 
 void display_field(WINDOW *win);
