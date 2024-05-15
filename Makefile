@@ -5,10 +5,13 @@ LFLAGS="-lncurses"
 all: snake
 	echo $^ $@
 
-snake: snake.o
-	${CC} ${CFLAGS} -o $@ $^ ${LFLAGS}
+snake: main.o snake.o
+	${CC} ${CFLAGS} $^ -o $@  ${LFLAGS}
 
 snake.o: snake.c
+	${CC} ${CFLAGS} -c -o $@ $^
+
+main.o: main.c
 	${CC} ${CFLAGS} -c -o $@ $^
 
 clean:
