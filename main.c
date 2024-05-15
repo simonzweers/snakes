@@ -16,13 +16,12 @@ int main() {
         .x_dir = -1,
         .y_dir = 0,
     };
+    food_pos_t food_pos;
+    new_food(&food_pos);
 
     snake_t *snake = snake_new(&snake_head_pos);
     snake_add_node(snake, &snake_head_pos);
-    snake_add_node(snake, &snake_head_pos);
-    snake_add_node(snake, &snake_head_pos);
 
-    bool gameloop = true;
     while (gameloop) {
 
         int chr = wgetch(win);
@@ -30,20 +29,16 @@ int main() {
         set_new_pos(&snake_head_pos, &snake_dir);
         if (!is_valid_position(snake_head_pos.x_pos, snake_head_pos.y_pos)) {
             gameloop = false;
-        } else { // Snake is in valid position
+        } else if (is_food_pos(&snake_head_pos, &food_pos)) {
+            snake_add_node(snake, &snake_head_pos);
+            new_food(&food_pos);
+        } else {
             snake_propogate(snake, &snake_head_pos);
         }
 
-        // 	if (is_food_pos())
-        // 	{
-        // 		snake_add_node();
-        // 	} else
-        // 	{
-        // 		snake_propogate();
-        // 	}
-
         werase(win);
         snake_display(snake, win);
+        display_food(win, &food_pos);
         display_field(win);
         usleep(100 * 1000);
     }
@@ -52,6 +47,8 @@ int main() {
 
     getch();
     endwin(); /* End curses mode		  */
+
+    printf("SNEK EXITED SUCCESSFULLY\n");
 
     return 0;
 }

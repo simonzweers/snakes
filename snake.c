@@ -131,3 +131,21 @@ bool is_valid_position(int x, int y) {
         return false;
     }
 }
+
+bool is_food_pos(snake_head_pos_t *snake_head_pos, food_pos_t *food_pos) {
+    if ((snake_head_pos->x_pos == food_pos->x) &&
+        (snake_head_pos->y_pos == food_pos->y)) {
+        return true;
+    }
+
+    return false;
+}
+
+void new_food(food_pos_t *food_pos) {
+    food_pos->x = rand() % FIELD_SIZE_X;
+    food_pos->y = rand() % FIELD_SIZE_Y;
+}
+
+void display_food(WINDOW *win, food_pos_t *food_pos) {
+    mvwaddstr(win, food_pos->y, food_pos->x * 2, "()");
+}
