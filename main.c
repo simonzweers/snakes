@@ -21,14 +21,16 @@ int main() {
 	snake_add_node(snake, &snake_head_pos);
 	snake_add_node(snake, &snake_head_pos);
 	snake_add_node(snake, &snake_head_pos);
-	while (1) {
+
+    bool gameloop = true;
+	while (gameloop) {
 
 		int chr = wgetch(win);
 		parse_input(chr, &snake_dir);
 		set_new_pos(&snake_head_pos, &snake_dir);
 		if (!is_valid_position(snake_head_pos.x_pos, snake_head_pos.y_pos))
 		{
-			break;
+			gameloop = false;
 		} else { // Snake is in valid position
 			snake_propogate(snake, &snake_head_pos);
 		}

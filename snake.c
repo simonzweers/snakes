@@ -83,11 +83,17 @@ void display_field(WINDOW *win) {
 	{
 		for (size_t x = 0; x <= FIELD_SIZE_X; x++)
 		{
-			if (y == FIELD_SIZE_Y || x == FIELD_SIZE_X) // Is border
+			if (y == FIELD_SIZE_Y) // Is lower border
 			{
-				char border_str[10] = {0};
-				sprintf(border_str, "%d", x);
-				mvwaddstr(win, y, x * 2, border_str);
+				mvwaddstr(win, y, x * 2, "--");
+			}
+			if (x == FIELD_SIZE_X) // Is right border
+			{
+				mvwaddstr(win, y, x * 2, "| ");
+			}
+			if (y == FIELD_SIZE_Y && x == FIELD_SIZE_X) // Is corner
+			{
+				mvwaddstr(win, y, x * 2, "+ ");
 			}			
 		}	
 	}
@@ -124,7 +130,7 @@ void set_new_pos(snake_head_pos_t* snake_head_pos, snake_dir_t *snake_dir) {
 }
 
 bool is_valid_position(int x, int y) {
-	if ((x >= 0 && x <= FIELD_SIZE_X) && (y >= 0 && y <= FIELD_SIZE_Y))
+	if ((x >= 0 && x < FIELD_SIZE_X) && (y >= 0 && y < FIELD_SIZE_Y))
 	{
 		return true;
 	} else
