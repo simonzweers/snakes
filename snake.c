@@ -8,6 +8,7 @@
 snake_t *snake_new(snake_head_pos_t *snake_head_pos) {
     snake_t *new_snake = (snake_t *)malloc(sizeof(snake_t));
     new_snake->head = (snake_node_t *)malloc(sizeof(snake_node_t));
+    new_snake->length = 1;
     new_snake->head->next = NULL;
     new_snake->head->x = snake_head_pos->x_pos;
     new_snake->head->y = snake_head_pos->y_pos;
@@ -16,6 +17,7 @@ snake_t *snake_new(snake_head_pos_t *snake_head_pos) {
 }
 
 void snake_add_node(snake_t *snake, snake_head_pos_t *snake_head_pos) {
+    snake->length++;
     snake_node_t *new_node = (snake_node_t *)malloc(sizeof(snake_node_t));
     new_node->x = snake_head_pos->x_pos;
     new_node->y = snake_head_pos->y_pos;
@@ -26,6 +28,7 @@ void snake_add_node(snake_t *snake, snake_head_pos_t *snake_head_pos) {
 }
 
 void snake_remove_last(snake_t *snake) {
+    snake->length--;
     snake_node_t *cursor = snake->head;
     snake_node_t *cursor_previous;
     if (cursor->next == NULL) {

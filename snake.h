@@ -21,6 +21,7 @@ typedef struct snake_node {
 } snake_node_t;
 
 typedef struct snake {
+    int length;
     snake_node_t *head;
 } snake_t;
 
