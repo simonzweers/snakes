@@ -50,13 +50,15 @@ int main() {
         display_field(win);
         usleep(100 * 1000);
     }
-    snake_remove_last(snake);
-    snake_free(snake);
 
     getch();
     endwin(); /* End curses mode		  */
 
     printf("SNEK EXITED SUCCESSFULLY\n");
+    printf("Final score: %d\n", snake->length);
+
+    snake_remove_last(snake);
+    snake_free(snake);
 
     return 0;
 }
