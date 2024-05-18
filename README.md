@@ -1,34 +1,17 @@
-# Snake
+# Snake collection
 
-This is a simple snake game that can be played in the terminal.
+This repository contains a number of implementations of the snake game in all sorts of different languages.
 
-## Prerequisites
-The project needs ncurses to be installed.  
-On debian/ubuntu based distribitions:
+A list of implementations:
 
-```bash
-sudo apt install libncurses-dev libncurses6 -y
-```
-
-## Installation
-
-```bash
-git clone https://github.com/simonzweers/csnake.git
-cd csnake
-make
-
-# Optional: for installing on the system
-sudo make install
-```
-
-## To play
-
-To play:
-```bash
-./snake # To run without installing on system
-```
-
-When snake is installed on the system:
-```bash
-snake
-```
+- [x] [C](./c)
+- [ ] C++
+- [ ] C#
+- [ ] Go
+- [ ] Java
+- [ ] JavaScript
+- [ ] Kotlin 
+- [ ] Lua
+- [ ] Python
+- [ ] Rust
+- [ ] TypeScript
