@@ -57,7 +57,6 @@ int main() {
     printf("SNEK EXITED SUCCESSFULLY\n");
     printf("Final score: %d\n", snake->length);
 
-    snake_remove_last(snake);
     snake_free(snake);
 
     return 0;
