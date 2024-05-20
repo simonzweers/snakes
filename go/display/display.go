@@ -1,34 +1,27 @@
 package display
 
 import (
-	"log"
-
-	"github.com/rthornton128/goncurses"
+	"github.com/gdamore/tcell/v2"
 	"github.com/simonzweers/snakes/go/snakego/snake"
 )
 
-func InitDisplay() {
-	win, err := goncurses.Init()
-	if err != nil {
-		log.Fatal("init:", err)
-	}
-	var hello goncurses.Key = win.GetChar()
-	win.Println(hello)
-	defer goncurses.End()
-}
-
-func DisplayField(win *goncurses.Window) {
+func DisplayField(win tcell.Screen) {
 	for y := 0; y <= snake.FIELD_SIZE_Y; y++ {
 		for x := 0; x <= snake.FIELD_SIZE_X; x++ {
 			if x == snake.FIELD_SIZE_X {
-				win.MovePrint(y, x*2, "| ")
+				win.SetContent(x, y, tcell.RuneVLine, nil, tcell.StyleDefault)
 			}
 			if y == snake.FIELD_SIZE_Y {
-				win.MovePrint(y, x*2, "--")
+				win.SetContent(x, y, tcell.RuneHLine, nil, tcell.StyleDefault)
 			}
 			if x == snake.FIELD_SIZE_X && y == snake.FIELD_SIZE_Y {
-				win.MovePrint(y, x*2, "+ ")
+				win.SetContent(x, y, tcell.RuneLRCorner, nil, tcell.StyleDefault)
+				// win.MovePrint(y, x*2, "+ ")
 			}
 		}
 	}
+}
+
+func DisplaySnake(win tcell.Screen, snake snake.Snake) {
+	// win.MovePrint(snake.Pos.Y, snake.Pos.X*2, "##")
 }

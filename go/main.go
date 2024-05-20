@@ -6,20 +6,23 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/rthornton128/goncurses"
+	"github.com/gdamore/tcell/v2"
+
 	"github.com/simonzweers/snakes/go/snakego/display"
+	"github.com/simonzweers/snakes/go/snakego/snake"
 )
 
 func main() {
 	// Init ncurses
-	stdscr, err := goncurses.Init()
+	stdscr, err := tcell.NewScreen()
 	if err != nil {
-		log.Fatal("init:", err)
+		log.Fatal("NewScreen:", err)
 	}
-	defer goncurses.End()
-	goncurses.Cursor(0)   // hide cursor
-	goncurses.Echo(false) // turn echoing of typed characters off
-	stdscr.Keypad(true)   // allow keypad input
+	if err := stdscr.Init(); err != nil {
+		log.Fatal("Init:", err)
+	}
+
+	defer stdscr.Fini()
 
 	// Catch Ctrl-C
 	var gameloop bool = true
@@ -31,10 +34,12 @@ func main() {
 	}()
 
 	// Init snake logic
+	snakeContext := snake.NewSnake()
 
 	for gameloop {
-		time.Sleep(100 * 1000)
 		display.DisplayField(stdscr)
-		stdscr.Refresh()
+		display.DisplaySnake(stdscr, snakeContext)
+		stdscr.Show()
+		time.Sleep(1000 * 1000)
 	}
 }

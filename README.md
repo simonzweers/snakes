@@ -15,3 +15,4 @@ A list of implementations:
 - [ ] Python
 - [ ] Rust
 - [ ] TypeScript
+- [ ] Zig
