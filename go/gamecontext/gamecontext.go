@@ -1,6 +1,7 @@
 package gamecontext
 
 import (
+	"fmt"
 	"sync"
 	"time"
 
@@ -8,15 +9,15 @@ import (
 )
 
 const (
-	FIELD_HEIGHT = 20
-	FIELD_WIDTH  = 30
+	FIELD_SIZE_Y = 20
+	FIELD_SIZE_X = 30
 )
 
 type GameContext struct {
 	Snake      Snake
 	screen     tcell.Screen
 	gameActive bool
-	mutext     sync.Mutex
+	mutex      sync.Mutex
 }
 
 func NewGameContext(newScreen tcell.Screen) *GameContext {
@@ -57,20 +58,37 @@ func (gc *GameContext) HandleKeyboardInput(input chan int) {
 
 func (gc *GameContext) StartGame(input chan int) {
 	ticker := time.NewTicker(100 * time.Millisecond)
+	frame := 0
+
+	go func() {
+		for {
+			dir := <-input
+			gc.parseDirection(Direction(dir))
+		}
+	}()
+
 	for {
 		<-ticker.C
+		gc.drawField()
+		drawText(gc.screen, 8, 8, fmt.Sprintf("%d", frame))
 
-		dir := <-input
-		switch dir {
-		case int(UP):
-			gc.screen.SetContent(3, 3, tcell.RuneUArrow, nil, tcell.StyleDefault)
-		case int(DOWN):
-			gc.screen.SetContent(3, 3, tcell.RuneDArrow, nil, tcell.StyleDefault)
-		case int(LEFT):
-			gc.screen.SetContent(3, 3, tcell.RuneLArrow, nil, tcell.StyleDefault)
-		case int(RIGHT):
-			gc.screen.SetContent(3, 3, tcell.RuneRArrow, nil, tcell.StyleDefault)
-		}
 		gc.screen.Show()
+		frame++
 	}
+}
+
+func (gc *GameContext) parseDirection(dir Direction) {
+	gc.mutex.Lock()
+	switch dir {
+	case UP:
+		gc.screen.SetContent(3, FIELD_SIZE_Y+3, tcell.RuneUArrow, nil, tcell.StyleDefault)
+	case DOWN:
+		gc.screen.SetContent(3, FIELD_SIZE_Y+3, tcell.RuneDArrow, nil, tcell.StyleDefault)
+	case LEFT:
+		gc.screen.SetContent(3, FIELD_SIZE_Y+3, tcell.RuneLArrow, nil, tcell.StyleDefault)
+	case RIGHT:
+		gc.screen.SetContent(3, FIELD_SIZE_Y+3, tcell.RuneRArrow, nil, tcell.StyleDefault)
+	}
+	gc.Snake.dir = dir
+	gc.mutex.Unlock()
 }

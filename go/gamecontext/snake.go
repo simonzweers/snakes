@@ -22,8 +22,8 @@ type Snake struct {
 func newSnake() (snake Snake) {
 	snake.dir = LEFT
 	snake.headPosition = Vector2{
-		X: FIELD_WIDTH / 2,
-		Y: FIELD_HEIGHT / 2,
+		X: FIELD_SIZE_X / 2,
+		Y: FIELD_SIZE_Y / 2,
 	}
 	return
 }
