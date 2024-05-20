@@ -3,7 +3,7 @@ package gamecontext
 type Direction int
 
 const (
-	UP Direction = iota
+	UP Direction = 1 + iota
 	DOWN
 	LEFT
 	RIGHT

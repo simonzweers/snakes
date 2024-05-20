@@ -24,5 +24,6 @@ func main() {
 
 	gamecontext := gamecontext.NewGameContext(stdscr)
 
+	go gamecontext.StartGame(c)
 	gamecontext.HandleKeyboardInput(c)
 }
