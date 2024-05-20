@@ -2,14 +2,13 @@ package main
 
 import (
 	"log"
-	"os"
-	"os/signal"
 
 	"github.com/gdamore/tcell/v2"
+	"github.com/simonzweers/snakes/go/snakego/gamecontext"
 )
 
 func main() {
-	// Init ncurses
+	// Init tcell
 	stdscr, err := tcell.NewScreen()
 	if err != nil {
 		log.Fatal("NewScreen:", err)
@@ -20,16 +19,10 @@ func main() {
 
 	defer stdscr.Fini()
 
-	// Catch Ctrl-C
-	var gameloop bool = true
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	go func() {
-		<-c
-		gameloop = false
-	}()
+	// Catch Keyboard input
+	c := make(chan int, 1)
 
-	for {
+	gamecontext := gamecontext.NewGameContext(stdscr)
 
-	}
+	gamecontext.HandleKeyboardInput(c)
 }
