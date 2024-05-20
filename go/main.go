@@ -4,12 +4,8 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"time"
 
 	"github.com/gdamore/tcell/v2"
-
-	"github.com/simonzweers/snakes/go/snakego/display"
-	"github.com/simonzweers/snakes/go/snakego/snake"
 )
 
 func main() {
@@ -33,13 +29,7 @@ func main() {
 		gameloop = false
 	}()
 
-	// Init snake logic
-	snakeContext := snake.NewSnake()
+	for {
 
-	for gameloop {
-		display.DisplayField(stdscr)
-		display.DisplaySnake(stdscr, snakeContext)
-		stdscr.Show()
-		time.Sleep(1000 * 1000)
 	}
 }
