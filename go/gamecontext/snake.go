@@ -27,3 +27,16 @@ func newSnake() (snake Snake) {
 	}
 	return
 }
+
+func (s *Snake) propogate() {
+	switch s.dir {
+	case UP:
+		s.headPosition.Y -= 1
+	case DOWN:
+		s.headPosition.Y += 1
+	case LEFT:
+		s.headPosition.X -= 1
+	case RIGHT:
+		s.headPosition.X += 1
+	}
+}

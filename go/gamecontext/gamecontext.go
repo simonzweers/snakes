@@ -1,7 +1,6 @@
 package gamecontext
 
 import (
-	"fmt"
 	"sync"
 	"time"
 
@@ -24,6 +23,7 @@ func NewGameContext(newScreen tcell.Screen) *GameContext {
 	gamecontext := new(GameContext)
 	gamecontext.Snake = newSnake()
 	gamecontext.screen = newScreen
+	gamecontext.gameActive = true
 	return gamecontext
 }
 
@@ -39,7 +39,7 @@ func (gc *GameContext) HandleKeyboardInput(input chan int) {
 		case *tcell.EventKey:
 			key := eventType.Key()
 			if key == tcell.KeyEscape || key == tcell.KeyCtrlC {
-				gc.screen.Fini()
+				gc.gameActive = false
 			}
 
 			switch key {
@@ -67,14 +67,16 @@ func (gc *GameContext) StartGame(input chan int) {
 		}
 	}()
 
-	for {
+	for gc.gameActive {
 		<-ticker.C
+		gc.screen.Clear()
+		gc.Snake.propogate()
 		gc.drawField()
-		drawText(gc.screen, 8, 8, fmt.Sprintf("%d", frame))
-
+		gc.drawSnake()
 		gc.screen.Show()
 		frame++
 	}
+	gc.screen.Fini()
 }
 
 func (gc *GameContext) parseDirection(dir Direction) {
