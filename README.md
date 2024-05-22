@@ -4,6 +4,7 @@ This repository contains a number of implementations of the snake game in all so
 
 A list of implementations:
 
+- [ ] Bash
 - [x] [C](./c)
 - [ ] C++
 - [ ] C#
