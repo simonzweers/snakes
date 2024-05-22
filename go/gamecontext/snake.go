@@ -14,25 +14,47 @@ type Vector2 struct {
 	Y int
 }
 
+type Node struct {
+	pos  Vector2
+	next *Node
+}
+
 type Snake struct {
 	headPosition Vector2
 	dir          Direction
-	body         []Vector2
+	head         *Node
+	len          int
 }
 
 func (s *Snake) addBodypart() {
-	s.body = append(s.body, s.headPosition)
+	newHead := new(Node)
+	newHead.pos.X = s.headPosition.X
+	newHead.pos.Y = s.headPosition.Y
+	newHead.next = s.head
+	s.head = newHead
+	s.len++
 }
 
 func (s *Snake) removeTail() {
-	if len(s.body) != 0 {
-		s.body = s.body[1:]
+	cursor := s.head
+	cursorPrev := cursor
+	if cursor.next == nil {
+		s.head = nil
+	} else {
+		for cursor.next != nil {
+			cursorPrev = cursor
+			cursor = cursor.next
+		}
+		cursorPrev.next = nil
 	}
+	cursor = nil
+	s.len--
 }
 
 func (s *Snake) move() {
-	s.addBodypart()
 	s.removeTail()
+
+	s.addBodypart()
 }
 
 func newSnake() (snake Snake) {
@@ -58,5 +80,4 @@ func (s *Snake) propogate() {
 	case RIGHT:
 		s.headPosition.X += 1
 	}
-	s.move()
 }

@@ -1,6 +1,10 @@
 package gamecontext
 
-import "github.com/gdamore/tcell/v2"
+import (
+	"fmt"
+
+	"github.com/gdamore/tcell/v2"
+)
 
 func (gc *GameContext) drawField() {
 	for y := 0; y <= FIELD_SIZE_Y; y++ {
@@ -18,17 +22,23 @@ func (gc *GameContext) drawField() {
 }
 
 func (gc *GameContext) drawSnake() {
-	for _, v := range gc.Snake.body {
+	cursor := gc.Snake.head
+	i := 0
+	for !(cursor == nil) {
 		gc.screen.SetContent(
-			v.X*2, v.Y,
+			cursor.pos.X*2, cursor.pos.Y,
 			'[',
 			nil, tcell.StyleDefault,
 		)
 		gc.screen.SetContent(
-			v.X*2+1, v.Y,
+			cursor.pos.X*2+1, cursor.pos.Y,
 			']',
 			nil, tcell.StyleDefault,
 		)
+		// display all the nodes on screen
+		drawText(gc.screen, FIELD_SIZE_X+3, FIELD_SIZE_Y+3+i, fmt.Sprintf("Snek part X: %d | Y: %d", cursor.pos.X, cursor.pos.Y))
+		cursor = cursor.next
+		i++
 	}
 }
 

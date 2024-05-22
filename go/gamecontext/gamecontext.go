@@ -74,6 +74,13 @@ func (gc *GameContext) StartGame(input chan int) {
 		<-ticker.C
 		gc.screen.Clear()
 		gc.Snake.propogate()
+		if gc.foodPickedUp() {
+			gc.Snake.addBodypart()
+			gc.food.newFood()
+		} else {
+			gc.Snake.move()
+		}
+
 		gc.drawField()
 		gc.drawSnake()
 		gc.drawFood()
@@ -97,4 +104,8 @@ func (gc *GameContext) parseDirection(dir Direction) {
 	}
 	gc.Snake.dir = dir
 	gc.mutex.Unlock()
+}
+
+func (gc *GameContext) foodPickedUp() bool {
+	return (gc.Snake.headPosition.X == gc.food.X) && (gc.Snake.headPosition.Y == gc.food.Y)
 }
