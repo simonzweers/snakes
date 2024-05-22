@@ -18,16 +18,18 @@ func (gc *GameContext) drawField() {
 }
 
 func (gc *GameContext) drawSnake() {
-	gc.screen.SetContent(
-		gc.Snake.headPosition.X*2, gc.Snake.headPosition.Y,
-		tcell.RuneBlock,
-		nil, tcell.StyleDefault,
-	)
-	gc.screen.SetContent(
-		gc.Snake.headPosition.X*2+1, gc.Snake.headPosition.Y,
-		tcell.RuneBlock,
-		nil, tcell.StyleDefault,
-	)
+	for _, v := range gc.Snake.body {
+		gc.screen.SetContent(
+			v.X*2, v.Y,
+			tcell.RuneBlock,
+			nil, tcell.StyleDefault,
+		)
+		gc.screen.SetContent(
+			v.X*2+1, v.Y,
+			tcell.RuneBlock,
+			nil, tcell.StyleDefault,
+		)
+	}
 }
 
 func drawText(s tcell.Screen, x1, y1 int, text string) {

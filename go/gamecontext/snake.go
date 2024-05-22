@@ -17,6 +17,22 @@ type Vector2 struct {
 type Snake struct {
 	headPosition Vector2
 	dir          Direction
+	body         []Vector2
+}
+
+func (s *Snake) addBodypart() {
+	s.body = append(s.body, s.headPosition)
+}
+
+func (s *Snake) removeTail() {
+	if len(s.body) != 0 {
+		s.body = s.body[1:]
+	}
+}
+
+func (s *Snake) move() {
+	s.addBodypart()
+	s.removeTail()
 }
 
 func newSnake() (snake Snake) {
@@ -25,6 +41,9 @@ func newSnake() (snake Snake) {
 		X: FIELD_SIZE_X / 2,
 		Y: FIELD_SIZE_Y / 2,
 	}
+	snake.addBodypart()
+	snake.addBodypart()
+	snake.addBodypart()
 	return
 }
 
@@ -39,4 +58,5 @@ func (s *Snake) propogate() {
 	case RIGHT:
 		s.headPosition.X += 1
 	}
+	s.move()
 }
