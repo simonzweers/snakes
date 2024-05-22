@@ -40,3 +40,16 @@ func drawText(s tcell.Screen, x1, y1 int, text string) {
 		col++
 	}
 }
+
+func (gc *GameContext) drawFood() {
+	gc.screen.SetContent(
+		gc.food.X*2, gc.food.Y,
+		'(',
+		nil, tcell.StyleDefault,
+	)
+	gc.screen.SetContent(
+		gc.food.X*2+1, gc.food.Y,
+		')',
+		nil, tcell.StyleDefault,
+	)
+}

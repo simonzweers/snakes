@@ -17,6 +17,7 @@ type GameContext struct {
 	screen     tcell.Screen
 	gameActive bool
 	mutex      sync.Mutex
+	food       Food
 }
 
 func NewGameContext(newScreen tcell.Screen) *GameContext {
@@ -67,12 +68,15 @@ func (gc *GameContext) StartGame(input chan int) {
 		}
 	}()
 
-	for gc.gameActive {
+	gc.food.newFood()
+
+	for gc.gameActive { // Main game loop
 		<-ticker.C
 		gc.screen.Clear()
 		gc.Snake.propogate()
 		gc.drawField()
 		gc.drawSnake()
+		gc.drawFood()
 		gc.screen.Show()
 		frame++
 	}
