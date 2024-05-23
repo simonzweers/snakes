@@ -1,6 +1,7 @@
 package gamecontext
 
 import (
+	"fmt"
 	"sync"
 	"time"
 
@@ -92,6 +93,7 @@ func (gc *GameContext) StartGame(input chan int) {
 		frame++
 	}
 	gc.screen.Fini()
+	fmt.Printf("Final Score: %d\n", gc.Snake.len)
 }
 
 func (gc *GameContext) parseDirection(dir Direction) {

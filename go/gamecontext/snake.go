@@ -64,8 +64,6 @@ func newSnake() (snake Snake) {
 		Y: FIELD_SIZE_Y / 2,
 	}
 	snake.addBodypart()
-	snake.addBodypart()
-	snake.addBodypart()
 	return
 }
 
