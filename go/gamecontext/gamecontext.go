@@ -74,7 +74,11 @@ func (gc *GameContext) StartGame(input chan int) {
 		<-ticker.C
 		gc.screen.Clear()
 		gc.Snake.propogate()
-		if gc.foodPickedUp() {
+		if !gc.Snake.isInField() {
+			gc.gameActive = false
+		} else if gc.Snake.isColliding() {
+			gc.gameActive = false
+		} else if gc.foodPickedUp() {
 			gc.Snake.addBodypart()
 			gc.food.newFood()
 		} else {

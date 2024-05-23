@@ -81,3 +81,21 @@ func (s *Snake) propogate() {
 		s.headPosition.X += 1
 	}
 }
+
+func (s *Snake) isInField() bool {
+	return (s.headPosition.X >= 0) && (s.headPosition.X < FIELD_SIZE_X) && (s.headPosition.Y >= 0) && (s.headPosition.Y < FIELD_SIZE_Y)
+}
+
+func (s *Snake) isColliding() bool {
+	cursor := s.head.next
+	if cursor == nil {
+		return false
+	}
+	for cursor != nil {
+		if (cursor.pos.X == s.headPosition.X) && (cursor.pos.Y == s.headPosition.Y) {
+			return true
+		}
+		cursor = cursor.next
+	}
+	return false
+}
