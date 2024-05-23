@@ -1,8 +1,6 @@
 package gamecontext
 
 import (
-	"fmt"
-
 	"github.com/gdamore/tcell/v2"
 )
 
@@ -36,7 +34,7 @@ func (gc *GameContext) drawSnake() {
 			nil, tcell.StyleDefault,
 		)
 		// display all the nodes on screen
-		drawText(gc.screen, FIELD_SIZE_X+3, FIELD_SIZE_Y+3+i, fmt.Sprintf("Snek part X: %d | Y: %d", cursor.pos.X, cursor.pos.Y))
+		// drawText(gc.screen, FIELD_SIZE_X+3, FIELD_SIZE_Y+3+i, fmt.Sprintf("Snek part X: %d | Y: %d", cursor.pos.X, cursor.pos.Y))
 		cursor = cursor.next
 		i++
 	}
