@@ -2,9 +2,9 @@ CC=gcc
 CFLAGS="-g"
 LFLAGS="-lncurses"
 
-all: snake
+all: csnake
 
-snake: main.o snake.o
+csnake: main.o snake.o
 	${CC} ${CFLAGS} $^ -o $@  ${LFLAGS}
 
 snake.o: snake.c

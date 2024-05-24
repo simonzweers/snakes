@@ -14,10 +14,6 @@ sudo apt install libncurses-dev libncurses6 -y
 
 To play:
 ```bash
-./snake # To run without installing on system
-```
-
-When snake is installed on the system:
-```bash
-snake
+make
+./snakec
 ```
