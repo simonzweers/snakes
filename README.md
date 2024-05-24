@@ -8,7 +8,7 @@ A list of implementations:
 - [x] [C](./c)
 - [ ] C++
 - [ ] C#
-- [ ] [Go](./go/)
+- [x] [Go](./go/)
 - [ ] Java
 - [ ] JavaScript
 - [ ] Kotlin 
