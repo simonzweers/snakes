@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/simonzweers/snakes/go/snakego/gamecontext"
+	"github.com/simonzweers/snakes/go/gosnake/gamecontext"
 )
 
 func main() {

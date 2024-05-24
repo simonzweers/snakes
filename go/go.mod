@@ -1,4 +1,4 @@
-module github.com/simonzweers/snakes/go/snakego
+module github.com/simonzweers/snakes/go/gosnake
 
 go 1.22.3
 
