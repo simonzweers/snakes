@@ -1,3 +1,5 @@
+mod snake;
+
 fn main() {
-    println!("Hello, world!");
+    snake::hello_snake();
 }
