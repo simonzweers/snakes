@@ -1,26 +1,33 @@
 use core::time;
 use std::{
-    error::Error,
-    io::{self, stdin, stdout, Cursor, Write},
-    thread::sleep,
+    io::{self, stdin, stdout, Write},
+    thread::{self, sleep},
 };
 
 use crossterm::{
     cursor,
     event::{read, Event, KeyCode, KeyEvent, KeyModifiers},
-    style::{Print, PrintStyledContent},
     terminal::{disable_raw_mode, enable_raw_mode},
     ExecutableCommand, QueueableCommand,
 };
 
+use crossterm::style::Print;
+
 mod snake;
 
 fn main() -> io::Result<()> {
-    let stdin = stdin();
+    let _stdin = stdin();
     let mut stdout = stdout();
 
     enable_raw_mode()?;
-    let _ = stdout.execute(cursor::Hide);
+    stdout.execute(cursor::Hide)?;
+    
+    let _input_thread_handle = thread::spawn(|| {
+        for _ in 1..10 {
+            println!("Hlpalsdkjfh");
+        }
+    });
+
     let mut i = 0;
     loop {
         match snake::display::draw_field(&stdout) {
