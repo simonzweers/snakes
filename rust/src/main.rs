@@ -1,25 +1,27 @@
 use core::time;
 use std::{
-    io::{self, stdin, stdout, Cursor},
+    error::Error,
+    io::{self, stdin, stdout, Cursor, Write},
     thread::sleep,
 };
 
 use crossterm::{
     cursor,
     event::{read, Event, KeyCode, KeyEvent, KeyModifiers},
+    style::{Print, PrintStyledContent},
     terminal::{disable_raw_mode, enable_raw_mode},
-    ExecutableCommand,
+    ExecutableCommand, QueueableCommand,
 };
 
 mod snake;
 
-fn main() {
+fn main() -> io::Result<()> {
     let stdin = stdin();
     let mut stdout = stdout();
 
-    enable_raw_mode().unwrap();
+    enable_raw_mode()?;
     let _ = stdout.execute(cursor::Hide);
-
+    let mut i = 0;
     loop {
         match snake::display::draw_field(&stdout) {
             Ok(_) => println!("Drawing field succeeded"),
@@ -33,9 +35,14 @@ fn main() {
             }) => break,
             _ => (),
         }
+        i += 1;
+        stdout.queue(cursor::MoveTo(i, 3))?;
+        stdout.queue(Print("i"))?;
+        stdout.flush()?;
         sleep(time::Duration::from_millis(200));
     }
 
     let _ = stdout.execute(cursor::Show);
     disable_raw_mode().unwrap();
+    Ok(())
 }
