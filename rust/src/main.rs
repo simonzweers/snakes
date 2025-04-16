@@ -84,7 +84,7 @@ fn main() -> io::Result<()> {
         }
         stdout.queue(Print("[]"))?;
         stdout.flush()?;
-        sleep(time::Duration::from_millis(200));
+        sleep(time::Duration::from_millis(100));
     }
 
     let _ = _input_thread_handle.join();
