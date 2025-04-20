@@ -39,7 +39,7 @@ impl GameState {
         }
     }
 
-    pub fn move_one_tick(&mut self) {
+    pub fn move_snakehead(&mut self) {
         self.head_pos.x += self.head_direction.x;
         self.head_pos.y += self.head_direction.y;
     }

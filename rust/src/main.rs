@@ -84,7 +84,7 @@ fn main() -> io::Result<()> {
                 break;
             };
 
-            gs.move_one_tick();
+            gs.move_snakehead();
             stdout.queue(cursor::MoveTo(
                 (gs.head_pos.x * 2).try_into().unwrap_or(0),
                 gs.head_pos.y.try_into().unwrap_or(0),
