@@ -13,6 +13,7 @@ use crossterm::{
 };
 
 use crossterm::style::Print;
+use snake::{Direction, Position};
 
 mod snake;
 
@@ -25,8 +26,8 @@ fn main() -> io::Result<()> {
 
     let game_state = Arc::new(Mutex::new(snake::GameState {
         active: true,
-        head_pos_y: 0,
-        head_pos_x: 0,
+        head_direction: Position { x: 1, y: 0 },
+        head_pos: Position { x: 5, y: 5 },
     }));
 
     let game_state_clone = Arc::clone(&game_state);
@@ -46,19 +47,19 @@ fn main() -> io::Result<()> {
                     }
                     Event::Key(KeyEvent {
                         code: KeyCode::Up, ..
-                    }) => gs.head_pos_y -= 1,
+                    }) => gs.set_direction(Direction::UP),
                     Event::Key(KeyEvent {
                         code: KeyCode::Down,
                         ..
-                    }) => gs.head_pos_y += 1,
+                    }) => gs.set_direction(Direction::DOWN),
                     Event::Key(KeyEvent {
                         code: KeyCode::Left,
                         ..
-                    }) => gs.head_pos_x -= 1,
+                    }) => gs.set_direction(Direction::LEFT),
                     Event::Key(KeyEvent {
                         code: KeyCode::Right,
                         ..
-                    }) => gs.head_pos_x += 1,
+                    }) => gs.set_direction(Direction::RIGHT),
                     _ => (),
                 }
             }
@@ -75,13 +76,21 @@ fn main() -> io::Result<()> {
         i += 1;
         stdout.queue(cursor::MoveTo(i, 3))?;
         stdout.queue(Print("i"))?;
+
+        // UPDATE GAME STATE
         {
-            let gs = game_state.lock().unwrap();
+            let mut gs = game_state.lock().unwrap();
             if !gs.active {
                 break;
             };
-            stdout.queue(cursor::MoveTo(gs.head_pos_x * 2, gs.head_pos_y))?;
+
+            gs.move_one_tick();
+            stdout.queue(cursor::MoveTo(
+                (gs.head_pos.x * 2).try_into().unwrap_or(0),
+                gs.head_pos.y.try_into().unwrap_or(0),
+            ))?;
         }
+
         stdout.queue(Print("[]"))?;
         stdout.flush()?;
         sleep(time::Duration::from_millis(100));
