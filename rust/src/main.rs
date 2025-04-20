@@ -67,15 +67,11 @@ fn main() -> io::Result<()> {
         snake::gamelogic::handle_input();
     });
 
-    let mut i = 0;
     loop {
         match snake::display::draw_field(&stdout) {
             Ok(_) => println!("Drawing field succeeded"),
             Err(err) => println!("Whoops, cannot print correctly: {err}"),
         }
-        i += 1;
-        stdout.queue(cursor::MoveTo(i, 3))?;
-        stdout.queue(Print("i"))?;
 
         // UPDATE GAME STATE
         {
