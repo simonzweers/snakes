@@ -68,10 +68,7 @@ fn main() -> io::Result<()> {
     });
 
     loop {
-        match snake::display::draw_field(&stdout) {
-            Ok(_) => println!("Drawing field succeeded"),
-            Err(err) => println!("Whoops, cannot print correctly: {err}"),
-        }
+        snake::display::draw_field(&stdout)?;
 
         // UPDATE GAME STATE
         {
@@ -81,6 +78,8 @@ fn main() -> io::Result<()> {
             };
 
             gs.move_snakehead();
+            gs.check_gamestate();
+
             stdout.queue(cursor::MoveTo(
                 (gs.head_pos.x * 2).try_into().unwrap_or(0),
                 gs.head_pos.y.try_into().unwrap_or(0),
@@ -92,6 +91,7 @@ fn main() -> io::Result<()> {
         sleep(time::Duration::from_millis(100));
     }
 
+    stdout.flush()?;
     let _ = _input_thread_handle.join();
     let _ = stdout.execute(cursor::Show);
     disable_raw_mode().unwrap();

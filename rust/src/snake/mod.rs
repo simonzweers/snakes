@@ -39,6 +39,16 @@ impl GameState {
         }
     }
 
+    pub fn check_gamestate(&mut self) {
+        if (self.head_pos.x >= 0 && self.head_pos.x < FIELD_WIDTH.into())
+            && (self.head_pos.y >= 0 && self.head_pos.y < FIELD_HEIGHT.into())
+        {
+            return;
+        } else {
+            self.active = false;
+        }
+    }
+
     pub fn move_snakehead(&mut self) {
         self.head_pos.x += self.head_direction.x;
         self.head_pos.y += self.head_direction.y;
