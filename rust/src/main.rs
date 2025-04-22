@@ -83,16 +83,30 @@ fn main() -> io::Result<()> {
                 break;
             };
 
-            gs.move_snakehead();
+            gs.propagate();
             gs.check_gamestate();
+
+            for node in &gs.snake_nodes {
+                stdout.queue(cursor::MoveTo(
+                    (node.x * 2).try_into().unwrap_or(0),
+                    node.y.try_into().unwrap_or(0),
+                ))?;
+                stdout.queue(Print("[]"))?;
+            }
 
             stdout.queue(cursor::MoveTo(
                 (gs.head_pos.x * 2).try_into().unwrap_or(0),
                 gs.head_pos.y.try_into().unwrap_or(0),
             ))?;
+            stdout.queue(Print("[]"))?;
+
+            stdout.queue(cursor::MoveTo(
+                (gs.food.x * 2).try_into().unwrap_or(0),
+                (gs.food.y).try_into().unwrap_or(0),
+            ))?;
+            stdout.queue(Print("()"))?;
         }
 
-        stdout.queue(Print("[]"))?;
         stdout.flush()?;
         sleep(time::Duration::from_millis(100));
     }

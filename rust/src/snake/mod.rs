@@ -66,6 +66,20 @@ impl GameState {
         }
     }
 
+    fn head_on_food(&mut self) -> bool {
+        return (self.head_pos.x == self.food.x) && (self.head_pos.y == self.food.y);
+    }
+
+    pub fn propagate(&mut self) {
+        self.move_snakehead();
+        self.snake_nodes.push_front(self.head_pos.clone());
+        if self.head_on_food() {
+            self.new_food();
+        } else {
+            self.snake_nodes.pop_back();
+        }
+    }
+
     pub fn check_gamestate(&mut self) {
         if (self.head_pos.x >= 0 && self.head_pos.x < FIELD_WIDTH.into())
             && (self.head_pos.y >= 0 && self.head_pos.y < FIELD_HEIGHT.into())
