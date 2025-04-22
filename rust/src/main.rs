@@ -3,11 +3,12 @@ use std::{
     io::{self, stdin, stdout, Write},
     sync::{Arc, Mutex},
     thread::{self, sleep},
+    time::Duration,
 };
 
 use crossterm::{
     cursor,
-    event::{read, Event, KeyCode, KeyEvent, KeyModifiers},
+    event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers},
     terminal::{disable_raw_mode, enable_raw_mode},
     ExecutableCommand, QueueableCommand,
 };
@@ -33,34 +34,43 @@ fn main() -> io::Result<()> {
     let game_state_clone = Arc::clone(&game_state);
     let _input_thread_handle = thread::spawn(move || {
         loop {
-            let input = crossterm::event::read().unwrap();
-            {
-                let mut gs = game_state_clone.lock().unwrap();
-                match input {
-                    Event::Key(KeyEvent {
-                        code: KeyCode::Char('c'),
-                        modifiers: KeyModifiers::CONTROL,
-                        ..
-                    }) => {
-                        gs.active = false;
-                        break;
+            if let Ok(input_present) = poll(Duration::from_millis(30)) {
+                if input_present {
+                    let input = crossterm::event::read().unwrap();
+                    {
+                        let mut gs = game_state_clone.lock().unwrap();
+                        match input {
+                            Event::Key(KeyEvent {
+                                code: KeyCode::Char('c'),
+                                modifiers: KeyModifiers::CONTROL,
+                                ..
+                            }) => {
+                                gs.active = false;
+                            }
+                            Event::Key(KeyEvent {
+                                code: KeyCode::Up, ..
+                            }) => gs.set_direction(Direction::UP),
+                            Event::Key(KeyEvent {
+                                code: KeyCode::Down,
+                                ..
+                            }) => gs.set_direction(Direction::DOWN),
+                            Event::Key(KeyEvent {
+                                code: KeyCode::Left,
+                                ..
+                            }) => gs.set_direction(Direction::LEFT),
+                            Event::Key(KeyEvent {
+                                code: KeyCode::Right,
+                                ..
+                            }) => gs.set_direction(Direction::RIGHT),
+                            _ => (),
+                        }
                     }
-                    Event::Key(KeyEvent {
-                        code: KeyCode::Up, ..
-                    }) => gs.set_direction(Direction::UP),
-                    Event::Key(KeyEvent {
-                        code: KeyCode::Down,
-                        ..
-                    }) => gs.set_direction(Direction::DOWN),
-                    Event::Key(KeyEvent {
-                        code: KeyCode::Left,
-                        ..
-                    }) => gs.set_direction(Direction::LEFT),
-                    Event::Key(KeyEvent {
-                        code: KeyCode::Right,
-                        ..
-                    }) => gs.set_direction(Direction::RIGHT),
-                    _ => (),
+                }
+            }
+            {
+                let gs = game_state_clone.lock().unwrap();
+                if !gs.active {
+                    break;
                 }
             }
         }
