@@ -8,13 +8,13 @@ use std::{
 
 use crossterm::{
     cursor,
-    event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers},
+    event::{poll, Event, KeyCode, KeyEvent, KeyModifiers},
     terminal::{disable_raw_mode, enable_raw_mode},
     ExecutableCommand, QueueableCommand,
 };
 
 use crossterm::style::Print;
-use snake::{Direction, Position};
+use snake::Direction;
 
 mod snake;
 
@@ -28,49 +28,46 @@ fn main() -> io::Result<()> {
     let game_state = Arc::new(Mutex::new(snake::GameState::new()));
 
     let game_state_clone = Arc::clone(&game_state);
-    let _input_thread_handle = thread::spawn(move || {
-        loop {
-            if let Ok(input_present) = poll(Duration::from_millis(30)) {
-                if input_present {
-                    let input = crossterm::event::read().unwrap();
-                    {
-                        let mut gs = game_state_clone.lock().unwrap();
-                        match input {
-                            Event::Key(KeyEvent {
-                                code: KeyCode::Char('c'),
-                                modifiers: KeyModifiers::CONTROL,
-                                ..
-                            }) => {
-                                gs.active = false;
-                            }
-                            Event::Key(KeyEvent {
-                                code: KeyCode::Up, ..
-                            }) => gs.set_direction(Direction::UP),
-                            Event::Key(KeyEvent {
-                                code: KeyCode::Down,
-                                ..
-                            }) => gs.set_direction(Direction::DOWN),
-                            Event::Key(KeyEvent {
-                                code: KeyCode::Left,
-                                ..
-                            }) => gs.set_direction(Direction::LEFT),
-                            Event::Key(KeyEvent {
-                                code: KeyCode::Right,
-                                ..
-                            }) => gs.set_direction(Direction::RIGHT),
-                            _ => (),
+    let _input_thread_handle = thread::spawn(move || loop {
+        if let Ok(input_present) = poll(Duration::from_millis(30)) {
+            if input_present {
+                let input = crossterm::event::read().unwrap();
+                {
+                    let mut gs = game_state_clone.lock().unwrap();
+                    match input {
+                        Event::Key(KeyEvent {
+                            code: KeyCode::Char('c'),
+                            modifiers: KeyModifiers::CONTROL,
+                            ..
+                        }) => {
+                            gs.active = false;
                         }
+                        Event::Key(KeyEvent {
+                            code: KeyCode::Up, ..
+                        }) => gs.set_direction(Direction::UP),
+                        Event::Key(KeyEvent {
+                            code: KeyCode::Down,
+                            ..
+                        }) => gs.set_direction(Direction::DOWN),
+                        Event::Key(KeyEvent {
+                            code: KeyCode::Left,
+                            ..
+                        }) => gs.set_direction(Direction::LEFT),
+                        Event::Key(KeyEvent {
+                            code: KeyCode::Right,
+                            ..
+                        }) => gs.set_direction(Direction::RIGHT),
+                        _ => (),
                     }
                 }
             }
-            {
-                let gs = game_state_clone.lock().unwrap();
-                if !gs.active {
-                    break;
-                }
+        }
+        {
+            let gs = game_state_clone.lock().unwrap();
+            if !gs.active {
+                break;
             }
         }
-        snake::gamelogic::handle_input();
     });
 
     loop {
