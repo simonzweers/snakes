@@ -116,7 +116,3 @@ pub struct Position<T> {
     pub x: T,
     pub y: T,
 }
-
-pub fn hello_snake() {
-    println!("Hello Snake!")
-}
