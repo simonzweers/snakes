@@ -1,4 +1,4 @@
-use std::collections::LinkedList;
+use std::{collections::LinkedList, num};
 
 use rand::Rng;
 
@@ -74,14 +74,10 @@ impl GameState {
         }
     }
 
-    fn head_on_food(&mut self) -> bool {
-        return (self.head_pos.x == self.food.x) && (self.head_pos.y == self.food.y);
-    }
-
     pub fn propagate(&mut self) {
         self.move_snakehead();
         self.snake_nodes.push_front(self.head_pos.clone());
-        if self.head_on_food() {
+        if self.head_pos == self.food {
             self.new_food();
         } else {
             self.snake_nodes.pop_back();
@@ -92,10 +88,20 @@ impl GameState {
         if (self.head_pos.x >= 0 && self.head_pos.x < FIELD_WIDTH.into())
             && (self.head_pos.y >= 0 && self.head_pos.y < FIELD_HEIGHT.into())
         {
+            self.active = !self.snake_is_colliding();
             return;
         } else {
             self.active = false;
         }
+    }
+
+    fn snake_is_colliding(&self) -> bool {
+        for node in self.snake_nodes.iter().skip(1) {
+            if node == &self.head_pos {
+                return true;
+            };
+        }
+        return false;
     }
 
     fn move_snakehead(&mut self) {
@@ -105,7 +111,7 @@ impl GameState {
 }
 
 // TODO: Add constructor method to avoid unnescesary public data types
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Position<T> {
     pub x: T,
     pub y: T,
