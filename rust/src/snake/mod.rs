@@ -1,3 +1,5 @@
+use std::{clone, collections::LinkedList};
+
 pub mod display;
 pub mod gamelogic;
 
@@ -15,9 +17,31 @@ pub struct GameState {
     pub active: bool,
     pub head_direction: Position<i32>,
     pub head_pos: Position<i32>,
+    pub food: Position<i32>,
+    pub snake_nodes: LinkedList<Position<i32>>,
 }
 
 impl GameState {
+    pub fn new() -> GameState {
+        let mut ret = GameState {
+            active: true,
+            head_direction: Position { x: 1, y: 0 },
+            head_pos: Position { x: 5, y: 5 },
+            food: Position {
+                x: FIELD_WIDTH as i32 / 2,
+                y: FIELD_HEIGHT as i32 / 2,
+            },
+            snake_nodes: LinkedList::new(),
+        };
+        ret.snake_nodes.push_back(ret.head_direction.clone());
+
+        return ret;
+    }
+
+    fn new_food() {
+        todo!("Implement new_food");
+    }
+
     pub fn set_direction(&mut self, direction: Direction) {
         match direction {
             Direction::UP => {
@@ -56,6 +80,7 @@ impl GameState {
 }
 
 // TODO: Add constructor method to avoid unnescesary public data types
+#[derive(Clone)]
 pub struct Position<T> {
     pub x: T,
     pub y: T,

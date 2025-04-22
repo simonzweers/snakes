@@ -25,11 +25,7 @@ fn main() -> io::Result<()> {
     enable_raw_mode()?;
     stdout.execute(cursor::Hide)?;
 
-    let game_state = Arc::new(Mutex::new(snake::GameState {
-        active: true,
-        head_direction: Position { x: 1, y: 0 },
-        head_pos: Position { x: 5, y: 5 },
-    }));
+    let game_state = Arc::new(Mutex::new(snake::GameState::new()));
 
     let game_state_clone = Arc::clone(&game_state);
     let _input_thread_handle = thread::spawn(move || {
