@@ -1,4 +1,4 @@
-use std::{collections::LinkedList, num};
+use std::collections::LinkedList;
 
 use rand::Rng;
 
