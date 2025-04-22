@@ -48,20 +48,28 @@ impl GameState {
     pub fn set_direction(&mut self, direction: Direction) {
         match direction {
             Direction::UP => {
-                self.head_direction.x = 0;
-                self.head_direction.y = -1;
+                if self.head_direction.y != 1 {
+                    self.head_direction.x = 0;
+                    self.head_direction.y = -1;
+                }
             }
             Direction::DOWN => {
-                self.head_direction.x = 0;
-                self.head_direction.y = 1;
+                if self.head_direction.y != -1 {
+                    self.head_direction.x = 0;
+                    self.head_direction.y = 1;
+                }
             }
             Direction::LEFT => {
-                self.head_direction.x = -1;
-                self.head_direction.y = 0;
+                if self.head_direction.x != 1 {
+                    self.head_direction.x = -1;
+                    self.head_direction.y = 0;
+                }
             }
             Direction::RIGHT => {
-                self.head_direction.x = 1;
-                self.head_direction.y = 0;
+                if self.head_direction.x != -1 {
+                    self.head_direction.x = 1;
+                    self.head_direction.y = 0;
+                }
             }
         }
     }
@@ -90,7 +98,7 @@ impl GameState {
         }
     }
 
-    pub fn move_snakehead(&mut self) {
+    fn move_snakehead(&mut self) {
         self.head_pos.x += self.head_direction.x;
         self.head_pos.y += self.head_direction.y;
     }
