@@ -83,19 +83,8 @@ fn main() -> io::Result<()> {
             gs.propagate();
             gs.check_gamestate();
 
-            for node in &gs.snake_nodes {
-                stdout.queue(cursor::MoveTo(
-                    (node.x * 2).try_into().unwrap_or(0),
-                    node.y.try_into().unwrap_or(0),
-                ))?;
-                stdout.queue(Print("[]"))?;
-            }
-
-            stdout.queue(cursor::MoveTo(
-                (gs.food.x * 2).try_into().unwrap_or(0),
-                (gs.food.y).try_into().unwrap_or(0),
-            ))?;
-            stdout.queue(Print("()"))?;
+            snake::display::draw_snake(&stdout, &gs)?;
+            snake::display::draw_food(&stdout, &gs)?;
         }
 
         stdout.flush()?;
