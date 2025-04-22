@@ -3,7 +3,6 @@ use std::collections::LinkedList;
 use rand::Rng;
 
 pub mod display;
-pub mod gamelogic;
 
 const FIELD_HEIGHT: u16 = 20;
 const FIELD_WIDTH: u16 = 20;
