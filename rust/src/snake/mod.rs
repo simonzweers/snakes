@@ -1,4 +1,6 @@
-use std::{clone, collections::LinkedList};
+use std::collections::LinkedList;
+
+use rand::Rng;
 
 pub mod display;
 pub mod gamelogic;
@@ -38,8 +40,9 @@ impl GameState {
         return ret;
     }
 
-    fn new_food() {
-        todo!("Implement new_food");
+    fn new_food(&mut self) {
+        self.food.x = rand::thread_rng().gen_range(0..FIELD_WIDTH).into();
+        self.food.y = rand::thread_rng().gen_range(0..FIELD_HEIGHT).into();
     }
 
     pub fn set_direction(&mut self, direction: Direction) {
