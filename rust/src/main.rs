@@ -10,10 +10,9 @@ use crossterm::{
     cursor,
     event::{poll, Event, KeyCode, KeyEvent, KeyModifiers},
     terminal::{disable_raw_mode, enable_raw_mode},
-    ExecutableCommand, QueueableCommand,
+    ExecutableCommand,
 };
 
-use crossterm::style::Print;
 use snake::Direction;
 
 mod snake;

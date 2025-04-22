@@ -1,5 +1,5 @@
 use crossterm::{cursor, style::Print, terminal, ExecutableCommand, QueueableCommand};
-use std::io::{self, Error, Write};
+use std::io::{self, Error};
 
 use super::{GameState, FIELD_HEIGHT, FIELD_WIDTH};
 
