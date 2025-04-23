@@ -14,6 +14,6 @@ A list of implementations:
 - [ ] Kotlin 
 - [ ] Lua
 - [ ] Python
-- [ ] Rust
+- [X] Rust
 - [ ] TypeScript
 - [ ] Zig
