@@ -1,6 +1,8 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
+#include <ncurses.h>
+
 static const int FIELD_SIZE_X = 30;
 static const int FIELD_SIZE_Y = 20;
 

@@ -14,10 +14,10 @@ main.o: main.c
 	${CC} ${CFLAGS} -c -o $@ $^
 
 clean:
-	rm snake *.o
+	rm ./csnake *.o
 
 install:
-	cp ./snake /usr/local/bin/
+	cp ./csnake /usr/local/bin/
 
 run: all
-	./snake
+	./csnake
